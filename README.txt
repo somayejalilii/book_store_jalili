@@ -1,2 +1,1 @@
 Django
-rest_framework
