@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}
+{% endblock %}
+{% block main %}
+    {% for obj in object_list %}
+    <table class="table table-success table-striped">
+        <thead > BOOK LIST
+        <td><a href={{ obj.get_absolute_url }}> {{ obj.name }}</a></td>
+            <td>{{ obj.description }}</td>
+        </thead>
+
+    </table>
+
+
+    {% endfor %}
+
+{% endblock %}
