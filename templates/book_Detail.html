@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}
+{% endblock %}
+{% block main %}
+    <div class="row">
+        <div class="col-4" style="font-style: normal; padding-top: 50px; margin-right: 50px;">
+            <h5 style="color: crimson; font-style: initial ">نام کتاب </h5> <h6
+                style="color: black">{{ object.name }}</h6>
+            <br>
+            <h5 style="color: crimson; font-style: initial ">نویسنده </h5> <h6
+                style="color: black">{{ object.author }}</h6>
+            <br>
+            <h5 style="color: crimson; font-style: initial ">قیمت </h5> <h6 style="color: black">{{ object.price }}</h6>
+            <br>
+        </div>
+        <div class="col-4">
+            <img class="card-img-bottom "
+                 src="{{ object.image.url }}"
+                 alt="Card image" style="max-width: 400px; height: 400px"/>
+        </div>
+        <div>
+            <input type="text" placeholder="تعداد"/>
+            <a href="#" class="btn btn-primary"> اضافه کردن به سبد خرید</a>
+            {{ object.cd }}
+        </div>
+        <div class="card">
+            <form method="post" action="{% url 'cart:cart_add' book.id %}">
+                {% csrf_token %}
+                <input type="number" name="quantity" value="1" max="{{ Book.Inventory }}" required
+                       oninvalid="setCustomValidity('باید حداکثر تعداد {{Book.Inventory}}باشد')">
+                <button class="btn btn-primary" type="submit"> اضافه کردن</button>
+            </form>
+        </div>
+
+    </div>
+{% endblock %}

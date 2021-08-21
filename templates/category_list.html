@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}
+{% endblock %}
+{% block main %}
+{#        <h2>{{ object.name }}</h2>#}
+{#    {% for book in object.books.all %}#}
+{#        {{book.name }}#}
+{##}
+{#    {% endfor %}#}
+     <div class="container mt-3">
+            <div class="container mt-3"
+                 style="width: 600px;">
+                <div class="card-group">
+                      {% for book in object.books.all %}
+                    <div class="card"
+                         style="width: 200px;">
+                    <img class="card-img-bottom "
+                    src="{{ book.image.url }}"
+                    alt="Card image" style="height: 300px; width: 200px;"/>
+                        <div class="card-body">
+                            <h4 class="card-title" style="text-align: center; font-size: medium;">
+                                 {{ book.name }}
+                          </h4>
+                            <p class="card-text">
+                              {{ book.price }}</p>
+                            <a href="{{ book.get_absolute_url }}" class="btn btn-primary">
+                              جزيیات
+                          </a>
+                        </div>
+
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+{% endblock %}

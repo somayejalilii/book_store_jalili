@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}
+    {% load static %}
+{% endblock %}
+{% block main %}
+    {% for book in all_search_results %}
+        <div class="row">
+    <div class="col-4" style="font-style: normal; padding-top: 50px; margin-right: 50px;">
+        <h5 style="color: crimson; font-style: initial ">نام کتاب </h5> <h6 style="color: black">{{ book.name }}</h6>
+            <br>
+         <h5 style="color: crimson; font-style: initial ">نویسنده </h5> <h6 style="color: black">{{ book.author }}</h6>
+            <br>
+         <h5 style="color: #dc143c; font-style: initial ">تعدا موجودی</h5> <h6 style="color: #000000">{{ book.Inventory }}</h6>
+            <br>
+        <h5 style="color: crimson; font-style: initial ">قیمت </h5> <h6 style="color: black">{{ book.price }}</h6>
+            <br>
+     </div>
+    <div class="col-4">
+         <img class="card-img-bottom "
+                 src="{{ book.image.url }}"
+                 alt="Card image" style="max-width: 400px; height: 400px"/>
+    </div>
+    <div>
+        <a href="#" class="btn btn-primary">  اضافه کردن به سبد خرید</a>
+    </div>
+
+
+</div>
+
+    {% empty %}
+        <h2>هیچ کتابی یافت نشد</h2>
+    {% endfor %}
+
+{% endblock %}
+
