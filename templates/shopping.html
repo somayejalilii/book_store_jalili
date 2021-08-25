@@ -17,7 +17,6 @@
   <tbody>
   {% for c in cart %}
     <tr class="table-active">
-      <th scope="row">{{ forloop.counter }}</th>
       <td colspan="2" class="table-active"><img src="{{ c.product.image.url }}" style="width: 100px"></td>
       <td>{{ c.product.name }}</td>
       <td>{{ c.product.price }}</td>
@@ -29,7 +28,7 @@
     </tr>
   {% endfor %}
   <tr>
-      <td colspan="6">{{ total }}</td>
+      <td colspan="4">{{ total }}</td>
   </tr>
   </tbody>
 </table>

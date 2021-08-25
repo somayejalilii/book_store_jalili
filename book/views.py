@@ -14,7 +14,7 @@ class BookListView(ListView):
 
 
 class BookDetailView(DetailView):
-    model = Book, CartForm
+    model = Book
     template_name = 'book_Detail.html'
 
 

@@ -18,16 +18,11 @@
                  src="{{ object.image.url }}"
                  alt="Card image" style="max-width: 400px; height: 400px"/>
         </div>
-        <div>
-            <input type="text" placeholder="تعداد"/>
-            <a href="#" class="btn btn-primary"> اضافه کردن به سبد خرید</a>
-            {{ object.cd }}
-        </div>
         <div class="card">
             <form method="post" action="{% url 'cart:cart_add' book.id %}">
                 {% csrf_token %}
-                <input type="number" name="quantity" value="1" max="{{ Book.Inventory }}" required
-                       oninvalid="setCustomValidity('باید حداکثر تعداد {{Book.Inventory}}باشد')">
+                <input type="number" name="quantity" value="1" max="{{ product.Inventory }}" required
+                       oninvalid="setCustomValidity('باید حداکثر تعداد {{product.Inventory}}باشد')">
                 <button class="btn btn-primary" type="submit"> اضافه کردن</button>
             </form>
         </div>

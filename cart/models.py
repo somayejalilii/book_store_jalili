@@ -11,7 +11,7 @@ from django.forms import ModelForm
 class Cart(models.Model):
     product = models.ForeignKey(Book, on_delete=models.CASCADE)
     user = models.ForeignKey(BaseUser, on_delete=models.CASCADE)
-    quantity = models.PositiveBigIntegerField()
+    quantity = models.PositiveBigIntegerField(default=0)
 
     def __str__(self):
         return self.user.username
@@ -19,7 +19,7 @@ class Cart(models.Model):
 
 class CartForm(ModelForm):
     class Meta:
-        models = Cart
+        model = Cart
         fields = ['quantity']
 
 # class CartItem(models.Model):
