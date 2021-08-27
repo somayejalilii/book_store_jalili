@@ -25,10 +25,13 @@ class Book(models.Model):
     category = models.ManyToManyField(Category, blank=True, related_name='books')
     author = models.CharField(max_length=50)
     date_created = models.DateTimeField(auto_now=True)
+    update = models.DateTimeField(auto_now=True,blank=True, null=True)
     Inventory = models.PositiveIntegerField()
     price = models.PositiveBigIntegerField()
     discount = models.PositiveIntegerField(blank=True, null=True)
     image = models.ImageField(upload_to='books', null=True, blank=True)
+    total_price = models.PositiveIntegerField(blank=True, null=True)
+    available = models.BooleanField(default=True,blank=True, null=True)
 
     def get_absolute_url(self):
         return reverse('book:book_detail', args=[str(self.id)])

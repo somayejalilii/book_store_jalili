@@ -45,3 +45,8 @@ class SearchView(ListView):
         else:
             result = None
         return result
+
+
+def category(request):
+    category = Category.objects.all()
+    return render(request, 'list_book.html', {'category': category})

@@ -17,9 +17,15 @@
                             <h4 class="card-title" style="text-align: center; font-size: medium;">
                                  {{ obj.name }}
                           </h4>
-                            <p class="card-text">
-                              {{ obj.price }}</p>
-
+                        {% if obj.discount %}
+                            <h6 style="color: crimson; font-style: initial; font-size: small">قیمت</h6>
+                            <h6 style="text-decoration: line-through;">{{ obj.price }}</h6>
+                            <h5 style=" color: crimson; font-style: initial; font-size: small">قیمت با تخفیف</h5>
+                            <h6>{{ obj.total_price }}</h6>
+                        {% else %}
+                            <h6 style="color: crimson; font-style: initial">قیمت</h6>
+                            <h6>{{ obj.total_price }}</h6>
+                        {% endif %}
                             <a href="{{ obj.get_absolute_url }}" class="btn btn-primary">
                               جزيیات
                           </a>
