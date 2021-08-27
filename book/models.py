@@ -27,6 +27,7 @@ class Book(models.Model):
     date_created = models.DateTimeField(auto_now=True)
     Inventory = models.PositiveIntegerField()
     price = models.PositiveBigIntegerField()
+    discount = models.PositiveIntegerField(blank=True, null=True)
     image = models.ImageField(upload_to='books', null=True, blank=True)
 
     def get_absolute_url(self):
@@ -34,3 +35,12 @@ class Book(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def total_price(self):
+        if not self.discount:
+            return self.price
+        elif self.discount:
+            total = (self.discount * self.price) / 100
+            return int(self.price - total)
+        return self.total_price

@@ -1,11 +1,17 @@
 from django.contrib import admin
-from .models import Address, BaseUser, Customer, Employee, Admin
+from .models import Address, BaseUser, Customer, Employee, Admin, Profile
 
 # Register your models here.
 admin.site.register(Address)
 
 
 # admin.site.register(BaseUser)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ['user', 'phone', 'address']
+
+
+admin.site.register(Profile, ProfileAdmin)
+
 
 @admin.register(Admin)
 class Admin(admin.ModelAdmin):

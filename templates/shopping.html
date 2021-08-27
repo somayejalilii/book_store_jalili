@@ -17,10 +17,11 @@
   <tbody>
   {% for c in cart %}
     <tr class="table-active">
-      <td colspan="2" class="table-active"><img src="{{ c.product.image.url }}" style="width: 100px"></td>
+      <td colspan="2" class="table-active"><img src="{{ c.product.image.url }}" style="width: 50px"></td>
       <td>{{ c.product.name }}</td>
-      <td>{{ c.product.price }}</td>
       <td>{{ c.quantity }}</td>
+      <td>{{ c.product.price }}</td>
+      <td>{{ c.product.discount }}</td>
       <td>{{ c.product.total_price }}</td>
       <td>
          {%  widthratio c.product.price 1 c.quantity %}
@@ -28,7 +29,7 @@
     </tr>
   {% endfor %}
   <tr>
-      <td colspan="4">{{ total }}</td>
+      <td colspan="7">{{ total }}</td>
   </tr>
   </tbody>
 </table>

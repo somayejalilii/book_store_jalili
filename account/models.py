@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import User, AbstractBaseUser, PermissionsMixin
 from .managers import UserManager
 from django.utils.translation import ugettext_lazy as _
+from django.db.models.signals import post_save
 
 
 # Create your models here.
@@ -71,11 +72,13 @@ class BaseUser(AbstractBaseUser, PermissionsMixin):
     def full_name(self):
         return self.get_full_name()
 
+
 class Admin(BaseUser):
     class Meta:
         proxy = True
         verbose_name = 'admin'
         verbose_name_plural = 'admins'
+
 
 class Customer(BaseUser):
     class Meta:
@@ -96,3 +99,20 @@ class Address(models.Model):
     Street = models.CharField(max_length=100)
     city = models.CharField(max_length=20)
     postal_code = models.IntegerField()
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(BaseUser, on_delete=models.CASCADE)
+    phone = models.IntegerField(null=True, blank=True)
+    address = models.CharField(max_length=500, null=True, blank=True)
+
+    def __str__(self):
+        return self.user.username
+
+def save_profile_user(sender, **kwargs):
+    if kwargs['created']:
+        profile_user = Profile(user=kwargs['instance'])
+        profile_user.save()
+
+
+post_save.connect(save_profile_user, sender=BaseUser)

@@ -22,7 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('order/', include('orders.urls')),
     path('', include('book.urls')),
-    # path('account/', include('account.urls', namespace='accounts')),
+    path('account/', include('account.urls', namespace='accounts')),
     path('cart/', include('cart.urls', namespace='cart'))
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL,

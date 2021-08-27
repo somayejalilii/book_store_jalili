@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}
+{% endblock %}
+{% block main %}
+     <form>
+     {% csrf_token %}
+     {{ user_form.as_p }}
+     {{ profile_form.as_p }}
+     <button type="submit" class="btn btn-primary">بروز رسانی</button>
+     </form>
+{% endblock %}

@@ -5,6 +5,7 @@ from .forms import SearchForm
 from django.db.models import Q
 from cart.models import *
 
+
 # Create your views here.
 
 class BookListView(ListView):
@@ -38,9 +39,9 @@ class SearchView(ListView):
         result = super(SearchView, self).get_queryset()
         query = self.request.GET.get('search')
         if query:
-            postresult = Book.objects.filter(Q(name__icontains=query) | Q(category__name__icontains=query))
+            postresult = Book.objects.filter(
+                Q(name__icontains=query) | Q(category__name__icontains=query) | Q(author__icontains=query))
             result = postresult
         else:
             result = None
         return result
-
