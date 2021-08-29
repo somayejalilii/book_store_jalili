@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
 from .models import *
-from django.contrib import messages
 from cart.models import Cart
-from account.models import BaseUser
+from .forms import CouponForm
+from django.views.decorators.http import require_POST
+from django.utils import timezone
+from django.contrib import messages
+
 
 # Create your views here.
 def home_page(request):
@@ -11,7 +14,9 @@ def home_page(request):
 
 def order_detail(request, id):
     order = Ordering.objects.get(id=id)
-    return render(request, 'orders.html', {'order': order})
+    form = CouponForm()
+    context = {'order': order, 'form': form}
+    return render(request, 'orders.html', context)
 
 
 def order_create(request):
@@ -27,3 +32,20 @@ def order_create(request):
             Cart.objects.filter(user_id=request.user.id).delete()
             messages.success(request, 'سفارش شما ایجاد شد')
             return redirect('orders:order_detail', order.id)
+
+
+@require_POST
+def coupon_order(request, id):
+    form = CouponForm(request.POST)
+    time = timezone.now()
+    if form.is_valid():
+        code = form.cleaned_data['code']
+        try:
+            coupon = Coupon.objects.get(code__iexact=code, start__lte=time, end__gte=time, active=True)
+        except Coupon.DoesNotExist:
+            messages.error(request, 'کد وارد شده درست نمیباشد', 'danger')
+            return redirect('orders:order_detail', id)
+        order = Ordering.objects.get(id=id)
+        order.discount = coupon.discount
+        order.save()
+    return redirect('orders:order_detail', id)
