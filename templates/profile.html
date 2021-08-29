@@ -4,23 +4,24 @@
 {% block main %}
     <table>
         <tr>
-            <th>user:{{ profile.user.username }}</th>
+            <th>نام کاربری:{{ profile.username }}</th>
         </tr>
         <tr>
-            <th>name:{{ profile.user.first_name }}</th>
+            <th>نام:{{ profile.first_name }}</th>
         </tr>
         <tr>
-            <th>name:{{ profile.user.last_name }}</th>
+            <th>نام خانوادگی:{{ profile.last_name }}</th>
         </tr>
         <tr>
-            <th>name:{{ profile.user.email }}</th>
+            <th>ایمیل:{{ profile.email }}</th>
         </tr>
          <tr>
-            <th> phone:{{ profile.phone }}</th>
+            <th> تلفن:{{ profile.phone }}</th>
         </tr>
          <tr>
-            <th>{{ profile.address }}</th>
+            <th>آدرس:{{ profile.address }}</th>
         </tr>
     </table>
-    <a href="{% url 'account:update' %}">بروزرسانی</a>
+    <button class="btn"><a href="{% url 'account:update' %}">بروزرسانی</a></button>
+    <button class="btn"><a href="{% url 'account:change_password'  %}">تغییر پسوورد</a></button>
 {% endblock %}

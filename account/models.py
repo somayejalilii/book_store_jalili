@@ -95,7 +95,7 @@ class Employee(BaseUser):
 
 
 class Address(models.Model):
-    user = models.ForeignKey('account.BaseUser', on_delete=models.CASCADE, related_name='ads')
+    user = models.ForeignKey(BaseUser, on_delete=models.CASCADE, related_name='ads')
     Street = models.CharField(max_length=100)
     city = models.CharField(max_length=20)
     postal_code = models.IntegerField()

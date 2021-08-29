@@ -2,39 +2,38 @@
 {% block title %}
 {% endblock %}
 {% block main %}
-    {#        <h2>{{ object.name }}</h2>#}
-    {#    {% for book in object.books.all %}#}
-    {#        {{book.name }}#}
-    {##}
-    {#    {% endfor %}#}
     <div class="container mt-3">
-        <div class="container mt-3"
-             style="width: 600px;">
-            <div class="card-group">
-                {% for book in object.books.all %}
-                <div class="card"
-                     style="width: 200px;">
-                    <img class="card-img-bottom "
-                         src="{{ book.image.url }}"
-                         alt="Card image" style="height: 300px; width: 200px;"/>
-                    <div class="card-body">
-                        <h4 class="card-title" style=" font-size: medium;">
-                            {{ book.name }}
-                        </h4>
+            <div class="container mt-3"
+                 style="width: 600px;">
+                <div class="card-group">
+                      {% for book in object.books.all %}
+                    <div class="card"
+                         style="width: 200px;">
+                    <img class="card-img-bottom"
+                             src="{{ book.image.url }}"
+                             alt="Card image"
+                             style="width: 100%; height: 300px;" />
+                        <div class="card-body">
+                            <h4 class="card-title" style="text-align: center; font-size: medium;">
+                                 {{ book.name }}
+                          </h4>
                         {% if book.discount %}
-                            <h5 style="color: crimson; font-style: initial">قیمت</h5>
+                            <h6 style="color: crimson; font-style: initial; font-size: small">قیمت</h6>
                             <h6 style="text-decoration: line-through;">{{ book.price }}</h6>
-                            <h5 style=" color: crimson; font-style: initial">قیمت با تخفیف</h5>
+                            <h5 style=" color: crimson; font-style: initial; font-size: small">قیمت با تخفیف</h5>
                             <h6>{{ book.total_price }}</h6>
                         {% else %}
-                            <h5 style="color: crimson; font-style: initial">قیمت</h5>
+                            <h6 style="color: crimson; font-style: initial">قیمت</h6>
                             <h6>{{ book.total_price }}</h6>
                         {% endif %}
-                     <a href="{{ book.get_absolute_url }}" class="btn btn-primary">جزيیات</a>
+                            <a href="{{ book.get_absolute_url }}" class="btn btn-primary">
+                              جزيیات
+                          </a>
+                        </div>
+
                     </div>
-                {% endfor %}
+                    {% endfor %}
                 </div>
             </div>
         </div>
-    </div>
 {% endblock %}

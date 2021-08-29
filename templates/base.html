@@ -40,7 +40,7 @@
                         <ul class="navbar-nav">
                             <li class="nav-item text-center LoginTrigger">
                                 <img id="image" src="/media/register.png">
-                                <div>ورود/ثبت نام</div>
+                                <div><a href="{% url 'account:user_register' %}">ورود/ثبت نام</a></div>
                             </li>
                         </ul>
                         <ul class="navbar-nav flex-grow-1 border-left-dashed">
@@ -85,7 +85,7 @@
                 </li>
             {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="#">ثبت نام</a>
+                    <a class="nav-link" href="{% url 'account:user_register' %}">ثبت نام</a>
                 </li>
             {% endif %}
                 <li class="nav-item">
@@ -96,10 +96,6 @@
                 </li>
 
             </ul>
-            {#            <form class="d-flex">#}
-            {#                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">#}
-            {#                <button class="btn btn-outline-success" type="submit">Search</button>#}
-            {#            </form>#}
         </div>
     </div>
 </nav>

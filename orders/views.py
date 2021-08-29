@@ -23,8 +23,7 @@ def order_create(request):
                                             last_name=['last_name'])
             cart = Cart.objects.filter(user_id=request.user.id)
             for cart in cart:
-                ShoppingCart.objects.create(order_id=order.id, user_id=request.user.id, book_id=cart.product_id, number=ShoppingCart.number)
+                ShoppingCart.objects.create(order_id=order.id, user_id=request.user.id, book_id=cart.product_id)
             Cart.objects.filter(user_id=request.user.id).delete()
             messages.success(request, 'سفارش شما ایجاد شد')
             return redirect('orders:order_detail', order.id)
-# user_id=request.user.id,
