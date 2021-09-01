@@ -138,7 +138,7 @@ def favorite(request):
 
 
 def history(request):
-    data = ShoppingCart.objects.filter(user_id=request.user.id)
+    data = ShoppingCart.objects.filter(user=request.user)
     return render(request, 'history.html', {'data': data})
 
 

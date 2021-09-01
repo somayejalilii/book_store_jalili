@@ -16,6 +16,6 @@ urlpatterns = [
     path('reset/done/',DonePassword.as_view(),name='reset_done'),
     path('confirm/<uidb64>/<token>/',password_reset_confirm.as_view(),name='password_reset_confirm'),
     path('confirm/done/',Complete.as_view(),name='complete'),
-    path('favorite/',favorite,name='favorite'),
+    path('favorite/<int:id>/',favorite,name='favorite'),
     path('history/',history,name='history'),
 ]

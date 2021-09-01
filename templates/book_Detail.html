@@ -29,7 +29,6 @@
             {% else %}
                 <a href="{% url 'book:favorite' book.id %}"><i class="fa fa-heart" style="color:blue; font-size: 24px;"></i></a>
             {% endif %}
-            <button type="submit" class="btn btn-info"><a href="{% url 'account:history' %}">لیست علاقه مندی ها</a></button>
         </div>
         <div class="card">
             <form method="post" action="{% url 'cart:cart_add' book.id %}">

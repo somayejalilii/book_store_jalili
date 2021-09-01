@@ -5,9 +5,9 @@
     <div class="container">
         <div class="card mt-3 p-5">
             {% for i in data %}
-                <h2>نام:{{ i.book.name }} &nbsp قیمت:{{ i.order.get_price }}</h2>
+                <h6><a href="{% url 'book:list' %}">نام:{{ i.book.name }} &nbsp قیمت:{{ i.order.get_price }}</a></h6>
                 <img src="{{ i.book.image.url }}"style="height: 200px; width: 300px;">
-                <h3>آدرس:{{ i.order.address }}</h3>
+                <h5>آدرس:{{ i.order.address }}</h5>
                 {% if i.order.paid == True %}
                     <p>پرداخت شد</p>
 
