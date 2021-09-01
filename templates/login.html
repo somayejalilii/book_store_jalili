@@ -2,9 +2,13 @@
 {% block title %}
 {% endblock %}
 {% block main %}
-    <form method="post" style="margin: 50px ;width: 200px ;padding: 20px;text-align: center; background-color: aqua;">
-    {%  csrf_token %}
-    {{ form.as_p }}
-    <button type="submit"  class="btn btn-primary">ورود</button>
-    </form>
+    <div class="container mt-5">
+        <form method="post" style="margin: 50px ;width: 200px ;padding: 20px;text-align: center; background-color: aqua;">
+        {%  csrf_token %}
+        {{ form.as_p }}
+        <button type="submit"  class="btn btn-primary">ورود</button>
+        </form>
+        <br>
+        <a href="{% url 'account:reset' %}">رمز عبور خد را فراموش کرده اید؟</a>
+    </div>
 {% endblock %}

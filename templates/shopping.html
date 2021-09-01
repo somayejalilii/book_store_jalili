@@ -20,7 +20,11 @@
     <tr class="table-active">
       <td class="table-active"><img src="{{ c.product.image.url }}" style="width: 50px"></td>
       <td>{{ c.product.name }}</td>
-      <td>{{ c.quantity }}</td>
+      <td>
+          <a href="{% url 'cart:add_single' c.id  %}"><i class="fa fa-plus"></i></a>
+          {{ c.quantity }}
+          <a href="{% url 'cart:remove_single' c.id  %}"><i class="fa fa-minus"></i></a>
+      </td>
       <td>{{ c.product.price }}</td>
       <td>
          {%  widthratio c.product.price 1 c.quantity %}

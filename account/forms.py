@@ -4,6 +4,7 @@ from .models import BaseUser, Profile
 
 class UserRegisterForm(forms.Form):
     user_name = forms.CharField(max_length=50)
+    email = forms.EmailField()
     first_name = forms.CharField(max_length=50)
     last_name = forms.CharField(max_length=50)
     password_1 = forms.CharField(max_length=50,
@@ -28,9 +29,11 @@ class UserRegisterForm(forms.Form):
 
 
 class UserLoginForm(forms.Form):
-    user = forms.CharField(max_length=50)
+    # user_name = forms.CharField(max_length=50)
+    email = forms.EmailField()
     password = forms.CharField(max_length=16,
-                               widget=forms.PasswordInput(attrs={'placeholder': 'پسوورد خود را وارد کنید'}))
+                               widget=forms.PasswordInput(attrs={'placeholder': 'پسوورد خود را وارد کنید'})
+                               )
 
 
 class UserUpdateForm(forms.ModelForm):
@@ -41,8 +44,8 @@ class UserUpdateForm(forms.ModelForm):
 
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
-        model = BaseUser
-        fields = ['first_name','last_name','email']
+        model = Profile
+        fields = ['phone','address','profile_image']
 
 class PhoneForms(forms.Form):
     phone = forms.IntegerField()

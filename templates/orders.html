@@ -4,10 +4,11 @@
     <div class="container">
     <h1>Order</h1>
     <h4>total price: {{ order.get_price }}</h4>
-        <form  method="post" action="{% url 'orders:coupon' id %}">
+        <form  method="post" action="{% url 'orders:coupon' order.id %}">
             {% csrf_token %}
             {{ form }}
             <button type="submit" class="btn btn-info">کد تخفیف</button>
         </form>
+    <a href="{% url 'orders:request' order.id order.get_price %}">پرداخت</a>
     </div>
 {%  endblock %}

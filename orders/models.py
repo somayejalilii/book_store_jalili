@@ -11,11 +11,12 @@ class Ordering(models.Model):
     paid = models.BooleanField(default=False)
     first_name = models.CharField(max_length=100, null=True, blank=True)
     last_name = models.CharField(max_length=100, null=True, blank=True)
-    total_price = models.PositiveBigIntegerField(default=0)
+    total_price = models.PositiveIntegerField(default=0)
     status = models.CharField(max_length=10, choices=STATUS, default='In_basket')
     # address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True)
     address = models.CharField(max_length=3000, null=True, blank=True)
-    discount = models.PositiveIntegerField(blank=True,null=True)
+    discount = models.PositiveIntegerField(blank=True, null=True)
+    code = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):
         return self.status
@@ -27,6 +28,7 @@ class Ordering(models.Model):
             return int(total - discount_price)
         return total
 
+
 class ShoppingCart(models.Model):
     book = models.ForeignKey(Book, on_delete=models.DO_NOTHING, null=True, related_name='order_item')
     order = models.ForeignKey(Ordering, on_delete=models.DO_NOTHING, null=True, related_name='order')
@@ -37,16 +39,18 @@ class ShoppingCart(models.Model):
         return self.user.username
 
     def price(self):
-        return self.book.total_price * self.number
+        return self.book.total_price * self.book.Inventory
+
 
 class OrderForm(ModelForm):
     class Meta:
         model = Ordering
         fields = ['address', 'first_name', 'last_name']
 
+
 class Coupon(models.Model):
     code = models.CharField(max_length=100, unique=True)
     active = models.BooleanField(default=False)
     start = models.DateTimeField()
     end = models.DateTimeField()
-    discount = models.IntegerField()
+    discount = models.PositiveIntegerField()

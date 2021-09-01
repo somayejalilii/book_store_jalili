@@ -9,7 +9,7 @@ class ShoppingInline(admin.TabularInline):
 
 
 class OrderingAdmin(admin.ModelAdmin):
-    list_display = ('user_id', 'first_name', 'last_name', 'date', 'address', 'get_price')
+    list_display = ('user_id', 'first_name', 'last_name', 'date', 'address', 'get_price','code')
     inlines = [ShoppingInline]
 
 

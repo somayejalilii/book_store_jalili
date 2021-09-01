@@ -2,26 +2,38 @@
 {% block title %}
 {% endblock %}
 {% block main %}
-    <table style="padding: 200px; margin: 100px;">
-        <tr>
-            <th>نام کاربری:{{ profile.username }}</th>
-        </tr>
-        <tr>
-            <th>نام:{{ profile.first_name }}</th>
-        </tr>
-        <tr>
-            <th>نام خانوادگی:{{ profile.last_name }}</th>
-        </tr>
-        <tr>
-            <th>ایمیل:{{ profile.email }}</th>
-        </tr>
-         <tr>
-            <th> تلفن:{{ profile.phone }}</th>
-        </tr>
-         <tr>
-            <th>آدرس:{{ profile.address }}</th>
-        </tr>
-    </table>
-    <button class="btn btn-outline-secondary"><a href="{% url 'account:update' %}">بروزرسانی</a></button>
-    <button class="btn btn-outline-secondary"><a href="{% url 'account:change_password'  %}">تغییر پسوورد</a></button>
-{% endblock %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-6">
+                <table style="padding: 200px; margin: 100px;">
+                    <tr>
+                        <th>نام کاربری:{{ profile.user.username }}</th>
+                    </tr>
+                    <tr>
+                        <th>نام:{{ profile.user.first_name }}</th>
+                    </tr>
+                    <tr>
+                        <th>نام خانوادگی:{{ profile.user.last_name }}</th>
+                    </tr>
+                    <tr>
+                        <th>ایمیل:{{ profile.user.email }}</th>
+                    </tr>
+                    <tr>
+                        <th> تلفن:{{ profile.phone }}</th>
+                    </tr>
+                    <tr>
+                        <th>آدرس:{{ profile.address }}</th>
+                    </tr>
+                </table>
+                <button class="btn btn-outline-secondary"><a href="{% url 'account:update' %}">بروزرسانی</a></button>
+                <button class="btn btn-outline-secondary"><a href="{% url 'account:change_password'  %}">تغییر پسوورد</a></button>
+
+            </div>
+            <div class="col-6">
+                <img src="{{ profile.profile.profile_image.url }}" style="width: 300px; height: 200px;">
+            </div>
+        </div>
+    </div>
+
+
+    {% endblock %}

@@ -5,10 +5,10 @@
     <div class="row">
         <div class="col-4" style="font-style: normal; padding-top: 50px; margin-right: 50px;">
             <h5 style="color: crimson; font-style: initial ">نام کتاب </h5> <h6
-                style="color: black">{{ object.name }}</h6>
+                style="color: black">{{ book.name }}</h6>
             <br>
             <h5 style="color: crimson; font-style: initial ">نویسنده </h5> <h6
-                style="color: black">{{ object.author }}</h6>
+                style="color: black">{{ book.author }}</h6>
             <br>
             {% if book.discount %}
                 <h5 style="color: crimson; font-style: initial">قیمت</h5>
@@ -22,8 +22,14 @@
         </div>
         <div class="col-4">
             <img class="card-img-bottom "
-                 src="{{ object.image.url }}"
+                 src="{{ book.image.url }}"
                  alt="Card image" style="max-width: 400px; height: 400px"/>
+            {% if book.is_favorite %}
+                <a href="{% url 'book:favorite' book.id %}"><i class="fa fa-heart" style="color: red; font-size: 24px;"></i></a>
+            {% else %}
+                <a href="{% url 'book:favorite' book.id %}"><i class="fa fa-heart" style="color:blue; font-size: 24px;"></i></a>
+            {% endif %}
+            <button type="submit" class="btn btn-info"><a href="{% url 'account:history' %}">لیست علاقه مندی ها</a></button>
         </div>
         <div class="card">
             <form method="post" action="{% url 'cart:cart_add' book.id %}">

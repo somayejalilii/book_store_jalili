@@ -6,7 +6,7 @@
     width: 400px ;
     padding: 40px;
     text-align: center;
-    background-color: aqua;">
+    background-color: aqua;" enctype="multipart/form-data">
      {% csrf_token %}
      {{ user_form.as_p }}
      {{ profile_form.as_p }}

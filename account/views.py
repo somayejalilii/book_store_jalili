@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
+
+from book.models import Book
 from .forms import UserRegisterForm, UserLoginForm, UserUpdateForm, ProfileUpdateForm, PhoneForms, CodeForm
 from .models import BaseUser, Profile
 from django.contrib.auth import authenticate, login, logout
@@ -8,24 +10,66 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from random import randint
+from django.core.mail import EmailMessage
 # from restapi import restfulapi
+from django.views import View
+from django.utils.encoding import force_text, force_bytes
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from six import text_type
+from django.contrib.auth import views as auth_views
+from django.urls import reverse_lazy
+from orders.models import ShoppingCart
 
 
-# Create your views here.
+class EmailToken(PasswordResetTokenGenerator):
+    def __make_hash_value(self, user, timestamp):
+        return (text_type(user.is_active) + text_type(user.id) + text_type(timestamp))
+
+
+email_generator = EmailToken()
+
+
 def user_register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            user = BaseUser.objects.create_user(username=data['user_name'], email='email',
+            user = BaseUser.objects.create_user(username=data['user_name'], email=data['email'],
                                                 first_name=data['first_name'],
                                                 last_name=data['last_name'], password=data['password_1'])
+            user.set_password(user.password)
             messages.success(request, 'ثبت نام موفقیت آمیز بود', 'success')
+            user.is_active = False
             user.save()
+            domain = get_current_site(request).domain
+            uidb64 = urlsafe_base64_encode(force_bytes((user.id)))
+            url = reverse('account:active', kwargs={'uidb64': uidb64, 'token': email_generator.make_token(user)})
+            link = 'http://' + domain + url
+            email = EmailMessage(
+                'active user',
+                link,
+                'test<s68jalili@gmail.com>',
+                [data['email']],
+            )
+            email.send(fail_silently=False)
+            messages.warning(request, 'کاربر محترم لطفا برای فعالسازی به ایمیل خود مراجعه کنید', 'warning')
             return redirect('book:list')
     else:
         form = UserRegisterForm()
     return render(request, 'register.html', {'form': form})
+
+
+class RegisterEmail(View):
+
+    def get(self, request, uidb64, token):
+        id = force_text(urlsafe_base64_decode(uidb64))
+        user = BaseUser.objects.get(id=id)
+        if user and email_generator.check_token(user, token):
+            user.is_active = True
+            user.save()
+            return redirect('account:login')
 
 
 def user_login(request):
@@ -33,7 +77,7 @@ def user_login(request):
         form = UserLoginForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            user = authenticate(request, user_name=data['user'], password=data['password'])
+            user = authenticate(request, email=data['email'], password=data['password'])
             if user is not None:
                 login(request, user)
                 messages.success(request, 'به وب سایت فروشگاه کتاب خوش آمدید', 'primary')
@@ -51,7 +95,7 @@ def user_logout(request):
 
 @login_required(login_url='account:login')
 def user_profile(request):
-    profile = BaseUser.objects.get(user_id=request.user.id)
+    profile = Profile.objects.get(id=request.user.id)
     return render(request, 'profile.html', {'profile': profile})
 
 
@@ -59,7 +103,7 @@ def user_profile(request):
 def user_update(request):
     if request.method == 'POST':
         user_form = UserUpdateForm(request.POST, instance=request.user)
-        profile_form = ProfileUpdateForm(request.POST, instance=request.user.first_name)
+        profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.first_name)
         if user_form and profile_form.is_valid():
             user_form.save()
             profile_form.save()
@@ -87,6 +131,34 @@ def change_password(request):
 
     return render(request, 'change.html', {'form': form})
 
+
+def favorite(request):
+    book = request.user.fa_user.all()
+    return render(request, 'favorite.html', {'book': book})
+
+
+def history(request):
+    data = ShoppingCart.objects.filter(user_id=request.user.id)
+    return render(request, 'history.html', {'data': data})
+
+
+class ResetPassword(auth_views.PasswordResetView):
+    template_name = 'reset.html'
+    success_url = reverse_lazy('account:reset_done')
+    email_template_name = 'link.html'
+
+
+class DonePassword(auth_views.PasswordResetDoneView):
+    template_name = 'done.html'
+
+
+class password_reset_confirm(auth_views.PasswordResetConfirmView):
+    template_name = 'confirm.html'
+    success_url = reverse_lazy('account:complete')
+
+
+class Complete(auth_views.PasswordResetCompleteView):
+    template_name = 'complete.html'
 
 # def phone(request):
 #     if request.method == 'POST':

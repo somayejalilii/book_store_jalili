@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}
+{% endblock %}
+{% block main %}
+    <div class="container">
+        <div class="card mt-3 p-5">
+           {% for i in book  %}
+               <a href="{% url 'book:book_detail' b.id %}"><img src="{{ i.image.url }}"style="width: 200px;height: 250px;"></a>
+               <h2>{{ i.name }}</h2>
+               <hr>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
