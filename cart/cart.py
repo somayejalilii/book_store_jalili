@@ -4,6 +4,9 @@ CART_SESSION_ID = 'cart'
 
 
 class Cart:
+    """
+    ایجاد سبد خرید
+    """
     def __init__(self, request):
         self.session = request.session
         cart = self.session.get(CART_SESSION_ID)
@@ -23,15 +26,30 @@ class Cart:
             yield item
 
     def get_total_price(self):
+        """
+        قیمت نهایی با توجه به تعداد محصول درخواست شده از کاربر
+        :return:
+        """
         return sum(int(i['price']) * i['quantity'] for i in self.cart.values())
 
     def remove(self, book):
+        """
+        حذف سفارش
+        :param book:
+        :return:
+        """
         book_id = str(book.id)
         if book_id in self.cart:
             del self.cart[book_id]
             self.save()
 
     def add(self, book, quantity):
+        """
+        اضافه کردن سفارش به سبد خرید
+        :param book:
+        :param quantity:
+        :return:
+        """
         book_id = str(book.id)
         if book_id not in self.cart:
             self.cart[book_id] = {'quantity': 0, 'price': str(book.price)}
@@ -42,5 +60,9 @@ class Cart:
         self.session.modified = True
 
     def clear(self):
+        """
+        حذف کردن سفارش ها
+        :return:
+        """
         del self.session[CART_SESSION_ID]
         self.save()

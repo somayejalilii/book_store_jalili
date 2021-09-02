@@ -6,6 +6,9 @@ from account.models import BaseUser
 
 
 class Category(models.Model):
+    """
+    کلاس موضوع محصول
+    """
     name = models.CharField(max_length=20)
 
     class Meta:
@@ -21,6 +24,9 @@ class Category(models.Model):
 
 
 class Book(models.Model):
+    """
+    مدل کتاب
+    """
     name = models.CharField(max_length=50, blank=False, null=True)
     category = models.ManyToManyField(Category, blank=True, related_name='books')
     author = models.CharField(max_length=50)
@@ -43,6 +49,10 @@ class Book(models.Model):
 
     @property
     def total_price(self):
+        """
+        محاسبه قیمت محصول با توجه به تخفیف و عدم تخفیف محصول
+        :return:
+        """
         if not self.discount:
             return self.price
         elif self.discount:

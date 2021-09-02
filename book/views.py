@@ -5,11 +5,14 @@ from .forms import SearchForm
 from django.db.models import Q
 from cart.models import *
 from orders.models import ShoppingCart
-
-
+from django.core.mail import EmailMessage
+from django.contrib import messages
 # Create your views here.
 
 class BookListView(ListView):
+    """
+    جهت لیست کردن محصولات با استفاده از لیست ویو جنگو
+    """
     model = Book
     queryset = Book.objects.all()
     template_name = 'list_book.html'
@@ -19,6 +22,12 @@ class BookListView(ListView):
 #     model = Book
 #     template_name = 'book_Detail.html'
 def book_detail(request, id):
+    """
+    جزییات محصول
+    :param request:
+    :param id:
+    :return:
+    """
     book = Book.objects.get(id=id)
     if book.favorite.filter(id=request.user.id).exists():
         book.is_favorite = True
@@ -26,7 +35,16 @@ def book_detail(request, id):
 
 
 def favorite_book(request, id):
+    """
+    در صورت لایک توسط کاربر اضافه کردن محصول به لیست
+    علاقه مندی های کاربر
+    تغییر فیلد علاقه مندی از False به True
+    :param request:
+    :param id:
+    :return:
+    """
     url = request.META.get('HTTP_REFERER')
+    print('salam',id)
     book = Book.objects.get(id=id)
     # book.is_favorite = False
     if book.favorite.filter(id=request.user.id).exists():
@@ -45,16 +63,27 @@ class BookCreateView(CreateView):
 
 
 class CategoryDetailView(DetailView):
+    """
+    چزییات محصول و موضوع کتاب
+    """
     model = Category
     template_name = 'category_list.html'
 
 
 class SearchView(ListView):
+    """
+    سرچ بار
+    """
     model = Book
     template_name = 'search.html'
     context_object_name = 'all_search_results'
 
     def get_queryset(self):
+        """
+        سرچ روی نام کتاب نام نویسنده و موضوع کتاب
+        امکان سرچ بصورت کلمه ای
+        :return:
+        """
         result = super(SearchView, self).get_queryset()
         query = self.request.GET.get('search')
         if query:
@@ -71,4 +100,23 @@ def category(request):
     return render(request, 'list_book.html', {'category': category})
 
 
-
+def contact(request):
+    """
+    صفحه ارتباط با ما که پیام مشتری به ایمیل ادمین ارسال میشود
+    :param request:
+    :return:
+    """
+    if request.method == 'POST':
+        subject = request.POST['subject']
+        email = request.POST['email']
+        msg = request.POST['message']
+        body = subject+'\n'+email+'\n'+msg
+        form = EmailMessage(
+            'ارتباط با ما',
+            body,
+            'test',
+            ('s68jalili@gmail.com',),
+        )
+        form.send(fail_silently=False)
+        messages.success(request, 'پیام شما با موفقیت ارسال شد')
+    return render(request,'contact.html')

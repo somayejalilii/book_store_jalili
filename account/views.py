@@ -32,14 +32,21 @@ email_generator = EmailToken()
 
 
 def user_register(request):
+    """
+    ثبت نام کاربر و بررسی ورود اطلاعات درست
+     فعال کردن کاربر با ارسال ایمیل
+      هش پسوورد
+    :param request:
+    :return:
+    """
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            user = BaseUser.objects.create_user(username=data['user_name'], email=data['email'],
-                                                first_name=data['first_name'],
-                                                last_name=data['last_name'], password=data['password_1'])
-            user.set_password(user.password)
+            user = BaseUser(username=data['user_name'], email=data['email'],
+                            first_name=data['first_name'],
+                            last_name=data['last_name'])
+            user.set_password(data['password_1'])
             messages.success(request, 'ثبت نام موفقیت آمیز بود', 'success')
             user.is_active = False
             user.save()
@@ -73,21 +80,39 @@ class RegisterEmail(View):
 
 
 def user_login(request):
+    """
+    بررسی نام کاربری و پسوورد جهت ورود کاربر
+    :param request:
+    :return:
+    """
     if request.method == 'POST':
         form = UserLoginForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            user = authenticate(request, email=data['email'], password=data['password'])
-            if user is not None:
-                login(request, user)
-                messages.success(request, 'به وب سایت فروشگاه کتاب خوش آمدید', 'primary')
-                return redirect('book:list')
+            # user = authenticate(username=data['user_name'], password=data['password'])
+            try:
+                user = BaseUser.objects.get(username=data['user_name'])
+                if user.check_password(data['password']):
+                    login(request, user)
+                    messages.success(request, 'به وب سایت فروشگاه کتاب خوش آمدید', 'primary')
+                    return redirect('book:list')
+
+                else:
+                    messages.success(request, 'رمز یا نام کاربری اشتباه است', 'primary')
+            except BaseUser.DoesNotExist:
+                messages.success(request, 'میخوای نیا !!!', 'primary')
+
     else:
         form = UserLoginForm()
     return render(request, 'login.html', {'form': form})
 
 
 def user_logout(request):
+    """
+    خروج کاربر
+    :param request:
+    :return:
+    """
     logout(request)
     messages.success(request, 'با موفقیت خارج شدید', 'info')
     return redirect('book:list')
@@ -95,27 +120,42 @@ def user_logout(request):
 
 @login_required(login_url='account:login')
 def user_profile(request):
-    profile = Profile.objects.get(id=request.user.id)
-    return render(request, 'profile.html', {'profile': profile})
+    """
+    صفحه پروفایل کاربر
+    :param request:
+    :return:
+    """
+    # profile = Profile.objects.get(user_id=request.user.profile)
+    return render(request, 'profile.html', {'profile': request.user})
 
 
 @login_required(login_url='account:login')
 def user_update(request):
+    """
+    بروزرسانی و تغییر اطلاعات توسط کاربر
+    :param request:
+    :return:
+    """
     if request.method == 'POST':
         user_form = UserUpdateForm(request.POST, instance=request.user)
-        profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.first_name)
+        profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.profile)
         if user_form and profile_form.is_valid():
             user_form.save()
             profile_form.save()
             messages.success(request, 'پروفایل بروزرسانی شد', 'success')
             return redirect('account:profile')
     else:
-        user_form = UserUpdateForm(instance=request.user.first_name)
+        user_form = UserUpdateForm()
         profile_form = ProfileUpdateForm()
     return render(request, 'update.html', {'user_form': user_form, 'profile_form': profile_form})
 
 
 def change_password(request):
+    """
+    تغییر پسوورد با ارسال ایمیل به کاربر
+    :param request:
+    :return:
+    """
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
@@ -132,17 +172,31 @@ def change_password(request):
     return render(request, 'change.html', {'form': form})
 
 
-def favorite(request):
+def favorite(request,id):
+    """
+    ایجاد صفحه علاقه مندی های کاربر
+    :param request:
+    :param id:
+    :return:
+    """
     book = request.user.fa_user.all()
     return render(request, 'favorite.html', {'book': book})
 
 
 def history(request):
+    """
+    ایجاد تاریخچه خرید و نمایش اطلاعات ثبت و خرید کاربر
+    :param request:
+    :return:
+    """
     data = ShoppingCart.objects.filter(user=request.user)
     return render(request, 'history.html', {'data': data})
 
 
 class ResetPassword(auth_views.PasswordResetView):
+    """
+    تغییر پسوورد
+    """
     template_name = 'reset.html'
     success_url = reverse_lazy('account:reset_done')
     email_template_name = 'link.html'

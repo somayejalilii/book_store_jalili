@@ -8,6 +8,7 @@ urlpatterns = [
     path('login/', user_login, name='login'),
     path('profile/', user_profile, name='profile'),
     path('update/', user_update, name='update'),
+    path('logout/',user_logout,name='logout'),
     path('change/', change_password, name='change_password'),
     # path('login_phone/',phone,name='phone'),
     # path('veryfy/',verify,name='verify'),

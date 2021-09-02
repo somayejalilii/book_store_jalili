@@ -13,6 +13,11 @@ from orders.models import OrderForm
 
 # Create your views here.
 def cart_detail(request, ):
+    """
+    سبد خرید
+    :param request:
+    :return:
+    """
     cart = Cart.objects.filter(user_id=request.user.id)
     form = OrderForm()
     total = 0
@@ -23,6 +28,12 @@ def cart_detail(request, ):
 
 @login_required(login_url='accounts:login')
 def cart_add(request, id):
+    """
+    اضافه کردن محصول به سبد خرید
+    :param request:
+    :param id:
+    :return:
+    """
     url = request.META.get('HTTP_REFERER')
     if request.method == 'POST':
         book = Book.objects.get(id=id)
@@ -38,6 +49,12 @@ def cart_add(request, id):
 
 @login_required(login_url='accounts:login')
 def remove_cart(request, id):
+    """
+    حذف سفارش از سبد خرید
+    :param request:
+    :param id:
+    :return:
+    """
     url = request.META.get('HTTP_REFERER')
     Cart.objects.filter(id=id).delete()
     messages.success(request, 'از سبد خرید حذف شد', 'success')
@@ -45,6 +62,12 @@ def remove_cart(request, id):
 
 
 def add_single(request, id):
+    """
+    اضافه کردن تعداد به محصول ثبت شده در سبد خرید
+    :param request:
+    :param id:
+    :return:
+    """
     url = request.META.get('HTTP_REFERER')
     cart = Cart.objects.get(id=id)
     product = Book.objects.get(id=cart.product.id)
@@ -55,6 +78,12 @@ def add_single(request, id):
 
 
 def remove_single(request, id):
+    """
+    حذف یکی از محصول ثبت شده در سبد خرید
+    :param request:
+    :param id:
+    :return:
+    """
     url = request.META.get('HTTP_REFERER')
     cart = Cart.objects.get(id=id)
     if cart.quantity < 2:

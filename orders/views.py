@@ -18,6 +18,12 @@ def home_page(request):
 
 
 def order_detail(request, id):
+    """
+    ثبت سفارش
+    :param request:
+    :param id:
+    :return:
+    """
     order = Ordering.objects.get(id=id)
     form = CouponForm()
     context = {
@@ -28,6 +34,11 @@ def order_detail(request, id):
 
 
 def order_create(request):
+    """
+    ایجاد سفارش و ارسال به صفحه جدید جهت پرداخت
+    :param request:
+    :return:
+    """
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
@@ -45,6 +56,9 @@ def order_create(request):
 
 @require_POST
 def coupon_order(request,id):
+    """
+    اعمال کد تخفیف و بررسی درست یا غلط بودن کد وارد شده
+    """
     form = CouponForm(request.POST)
     time = timezone.now()
     if form.is_valid():
@@ -74,6 +88,13 @@ CallbackURL = 'http://localhost:8000/verify/'
 
 
 def send_request(request,price,id):
+    """
+    ایجاد درگاه بانکی
+    :param request:
+    :param price:
+    :param id:
+    :return:
+    """
     global amount
     amount = price
     req_data = {
@@ -105,6 +126,11 @@ def send_request(request,price,id):
 
 
 def verify(request):
+    """
+    پرداخت
+    :param request:
+    :return:
+    """
     t_status = request.GET.get('Status')
     t_authority = request.GET['Authority']
     if request.GET.get('Status') == 'OK':

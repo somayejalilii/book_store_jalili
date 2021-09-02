@@ -5,6 +5,9 @@ from django.forms import ModelForm
 
 
 class Ordering(models.Model):
+    """
+    مدل سفارش
+    """
     STATUS = [('done', 'Done'), ('in_process', 'In_process'), ('in_basket', 'In_basket')]
     user_id = models.ForeignKey(BaseUser, on_delete=models.DO_NOTHING, related_name='user_id', null=True)
     date = models.DateTimeField(auto_now_add=True)
@@ -13,7 +16,7 @@ class Ordering(models.Model):
     last_name = models.CharField(max_length=100, null=True, blank=True)
     total_price = models.PositiveIntegerField(default=0)
     status = models.CharField(max_length=10, choices=STATUS, default='In_basket')
-    # address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True)
+    # address = models.ForeignKey(Address, on_delete=models.CASCADE,blank=True,null=True)
     address = models.CharField(max_length=3000, null=True, blank=True)
     discount = models.PositiveIntegerField(blank=True, null=True)
     code = models.CharField(max_length=50, null=True, blank=True)
@@ -22,6 +25,10 @@ class Ordering(models.Model):
         return self.status
 
     def get_price(self):
+        """
+        محاسبه قیمت محصول با احتساب تخفیف
+        :return:
+        """
         total = sum(i.price() for i in self.order.all())
         if self.discount:
             discount_price = (self.discount / 100) * total
@@ -30,6 +37,13 @@ class Ordering(models.Model):
 
 
 class ShoppingCart(models.Model):
+    """
+    مدل سبد خرید
+     ارتباط با مدل
+      کتاب
+      یوزر
+       سفارش
+    """
     book = models.ForeignKey(Book, on_delete=models.DO_NOTHING, null=True, related_name='order_item')
     order = models.ForeignKey(Ordering, on_delete=models.DO_NOTHING, null=True, related_name='order')
     user = models.ForeignKey(BaseUser, on_delete=models.CASCADE)
@@ -49,6 +63,9 @@ class OrderForm(ModelForm):
 
 
 class Coupon(models.Model):
+    """
+    مدل کد تخفیف
+    """
     code = models.CharField(max_length=100, unique=True)
     active = models.BooleanField(default=False)
     start = models.DateTimeField()

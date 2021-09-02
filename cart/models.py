@@ -9,6 +9,9 @@ from django.forms import ModelForm
 
 
 class Cart(models.Model):
+    """
+    سبد خرید و ارتباط با محصول و کاربر و تعداد درخواست
+    """
     product = models.ForeignKey(Book, on_delete=models.CASCADE)
     user = models.ForeignKey(BaseUser, on_delete=models.CASCADE)
     quantity = models.PositiveBigIntegerField(default=0)

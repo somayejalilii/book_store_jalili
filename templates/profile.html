@@ -7,22 +7,22 @@
             <div class="col-6">
                 <table style="padding: 200px; margin: 100px;">
                     <tr>
-                        <th>نام کاربری:{{ profile.user.username }}</th>
+                        <th>نام کاربری:{{ profile.id }}</th>
                     </tr>
                     <tr>
-                        <th>نام:{{ profile.user.first_name }}</th>
+                        <th>نام:{{ profile.first_name }}</th>
                     </tr>
                     <tr>
-                        <th>نام خانوادگی:{{ profile.user.last_name }}</th>
+                        <th>نام خانوادگی:{{ profile.last_name }}</th>
                     </tr>
                     <tr>
-                        <th>ایمیل:{{ profile.user.email }}</th>
+                        <th>ایمیل:{{ profile.email }}</th>
                     </tr>
                     <tr>
-                        <th> تلفن:{{ profile.phone }}</th>
+                        <th> تلفن:{{ profile.profile.phone }}</th>
                     </tr>
                     <tr>
-                        <th>آدرس:{{ profile.address }}</th>
+                        <th>آدرس:{{ profile.profile.address }}</th>
                     </tr>
                 </table>
                 <button class="btn btn-outline-secondary"><a href="{% url 'account:update' %}">بروزرسانی</a></button>
@@ -31,15 +31,14 @@
 
             </div>
             <div class="col-6">
-                <img src="{{ profile.profile.profile_image.url }}" style="width: 300px; height: 200px;">
+                <img src="{{ profile.image.url }}" style="width: 300px; height: 200px;">
             </div>
             <div>
-                <button type="submit" class="btn btn-info">
+                <br>
+                <br>
                     <a href="{% url 'account:history'%}"> تاریخچه سفارشات</a>
-                </button>
-                <button type="submit" class="btn btn-info">
                     <a href="{% url 'account:favorite' profile.id %}">لیست علاقه مندی ها</a>
-                </button>
+
             </div>
         </div>
     </div>

@@ -103,15 +103,24 @@ class Address(models.Model):
 
 
 class Profile(models.Model):
+    """
+    کلاس پزوفایل جهت ایجاد پروفایل برای کاربر
+    """
     user = models.OneToOneField(BaseUser, on_delete=models.CASCADE)
     phone = models.IntegerField(null=True, blank=True)
     address = models.CharField(max_length=500, null=True, blank=True)
-    profile_image = models.ImageField(upload_to='profile/', null=True,blank=True)
+    profile_image = models.ImageField(upload_to='profile/',default='/media/register.png', null=True, blank=True)
 
     def __str__(self):
         return self.user.username
 
 def save_profile_user(sender, **kwargs):
+    """
+    به محض ثبت نام کاربر یک صفحه پروفایل با اطلاعات وارد شده از طرف کاربر ایجاد میشود
+    :param sender:
+    :param kwargs:
+    :return:
+    """
     if kwargs['created']:
         profile_user = Profile(user=kwargs['instance'])
         profile_user.save()

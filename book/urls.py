@@ -12,4 +12,5 @@ urlpatterns = [
     path('category_detail/<int:pk>/', CategoryDetailView.as_view(), name='category_detail'),
     path('feed/', SearchView.as_view(), name='search_bar'),
     path('favorite/<int:id>/', favorite_book, name='favorite'),
+    path('contact/',contact,name='contact'),
 ]
