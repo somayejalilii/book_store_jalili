@@ -2,20 +2,35 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView
 from .models import Book, Category
 from .forms import SearchForm
-from django.db.models import Q
+from django.db.models import Q,Max,Min
 from cart.models import *
 from orders.models import ShoppingCart
 from django.core.mail import EmailMessage
 from django.contrib import messages
+from .filters import BookFilter
+
+
 # Create your views here.
 
-class BookListView(ListView):
-    """
-    جهت لیست کردن محصولات با استفاده از لیست ویو جنگو
-    """
-    model = Book
-    queryset = Book.objects.all()
-    template_name = 'list_book.html'
+# class BookListView(ListView):
+#     """
+#     جهت لیست کردن محصولات با استفاده از لیست ویو جنگو
+#     """
+#     model = Book
+#     queryset = Book.objects.all()
+#     template_name = 'list_book.html'
+
+
+def all_product(request):
+    books = Book.objects.all()
+    product = Book.objects.all()
+    # min = Book.objects.aggregate(price=Min('price'))
+    # min_price = int(min('price'))
+    # max = Book.objects.aggregate(price=Max('price'))
+    # max_price = int(max('price'))
+    filter = BookFilter(request.GET, queryset=books)
+    books = filter.qs
+    return render(request, 'list_book.html', {'product':product,'books': books, 'filter': filter})
 
 
 # class BookDetailView(DetailView):
@@ -44,7 +59,7 @@ def favorite_book(request, id):
     :return:
     """
     url = request.META.get('HTTP_REFERER')
-    print('salam',id)
+    print('salam', id)
     book = Book.objects.get(id=id)
     # book.is_favorite = False
     if book.favorite.filter(id=request.user.id).exists():
@@ -55,6 +70,7 @@ def favorite_book(request, id):
         book.is_favorite = True
     book.save()
     return redirect(url)
+
 
 class BookCreateView(CreateView):
     model = Book
@@ -110,7 +126,7 @@ def contact(request):
         subject = request.POST['subject']
         email = request.POST['email']
         msg = request.POST['message']
-        body = subject+'\n'+email+'\n'+msg
+        body = subject + '\n' + email + '\n' + msg
         form = EmailMessage(
             'ارتباط با ما',
             body,
@@ -119,4 +135,4 @@ def contact(request):
         )
         form.send(fail_silently=False)
         messages.success(request, 'پیام شما با موفقیت ارسال شد')
-    return render(request,'contact.html')
+    return render(request, 'contact.html')

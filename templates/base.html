@@ -80,6 +80,7 @@
                                    href="{% url 'book:category_detail' category.pk %}">{{ category.name }}</a>
                             </li>
                         {% endfor %}
+
                     </ul>
                     {% if BaseUser.is_authenticated %}
                         <li class="nav-item">

@@ -2,38 +2,88 @@
 {% block title %}
 {% endblock %}
 {% block main %}
-    <div class="container mt-3">
-            <div class="container mt-3"
-                 style="width: 600px;">
-                <div class="card-group">
-                     {% for obj in object_list %}
-                    <div class="card"
-                         style="width: 200px;">
-                    <img class="card-img-bottom"
-                             src="{{ obj.image.url }}"
-                             alt="Card image"
-                             style="width: 100%; height: 300px;" />
-                        <div class="card-body">
-                            <h4 class="card-title" style="text-align: center; font-size: medium;">
-                                 {{ obj.name }}
-                          </h4>
-                        {% if obj.discount %}
-                            <h6 style="color: crimson; font-style: initial; font-size: small">قیمت</h6>
-                            <h6 style="text-decoration: line-through;">{{ obj.price }}</h6>
-                            <h5 style=" color: crimson; font-style: initial; font-size: small">قیمت با تخفیف</h5>
-                            <h6>{{ obj.total_price }}</h6>
-                        {% else %}
-                            <h6 style="color: crimson; font-style: initial">قیمت</h6>
-                            <h6>{{ obj.total_price }}</h6>
-                        {% endif %}
-                            <a href="{{ obj.get_absolute_url }}" class="btn btn-primary">
-                              جزيیات
-                          </a>
-                        </div>
+{#    <div class="container mt-3">#}
+{#            <div class="container mt-3"#}
+{#                 style="width: 600px;">#}
+{#                <div class="card-group">#}
+{#                     {% for obj in object_list %}#}
+{#                    <div class="card"#}
+{#                         style="width: 200px;">#}
+{#                    <img class="card-img-bottom"#}
+{#                             src="{{ obj.image.url }}"#}
+{#                             alt="Card image"#}
+{#                             style="width: 100%; height: 300px;" />#}
+{#                        <div class="card-body">#}
+{#                            <h4 class="card-title" style="text-align: center; font-size: medium;">#}
+{#                                 {{ obj.name }}#}
+{#                          </h4>#}
+{#                        {% if obj.discount %}#}
+{#                            <h6 style="color: crimson; font-style: initial; font-size: small">قیمت</h6>#}
+{#                            <h6 style="text-decoration: line-through;">{{ obj.price }}</h6>#}
+{#                            <h5 style=" color: crimson; font-style: initial; font-size: small">قیمت با تخفیف</h5>#}
+{#                            <h6>{{ obj.total_price }}</h6>#}
+{#                        {% else %}#}
+{#                            <h6 style="color: crimson; font-style: initial">قیمت</h6>#}
+{#                            <h6>{{ obj.total_price }}</h6>#}
+{#                        {% endif %}#}
+{#                            <a href="{{ obj.get_absolute_url }}" class="btn btn-primary">#}
+{#                              جزيیات#}
+{#                          </a>#}
+{#                        </div>#}
+{##}
+{#                    </div>#}
+{#                    {% endfor %}#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+    <div class="container-fluid">
+        <div class="col-3">
+            <form>
+                <label for="">قیمت
+                    <input type="range" name="price_1" min="100" max="150000">
+                    <input type="range" name="price_2" min="100" max="150000">
+                </label>
+                <button type="submit" class="btn btn-danger">فیلتر</button>
+            </form>
+        </div>
+        <div class="col-9">
+            <div class="row">
+                <div class="container mt-3">
+                    <div class="container mt-3"
+                         style="width: 600px;">
+                        <div class="card-group">
+                            {% for obj in product %}
+                                <div class="card"
+                                     style="width: 200px;">
+                                    <img class="card-img-bottom"
+                                         src="{{ obj.image.url }}"
+                                         alt="Card image"
+                                         style="width: 100%; height: 300px;"/>
+                                    <div class="card-body">
+                                        <h4 class="card-title" style="text-align: center; font-size: medium;">
+                                            {{ obj.name }}
+                                        </h4>
+                                        {% if obj.discount %}
+                                            <h6 style="color: crimson; font-style: initial; font-size: small">قیمت</h6>
+                                            <h6 style="text-decoration: line-through;">{{ obj.price }}</h6>
+                                            <h5 style=" color: crimson; font-style: initial; font-size: small">قیمت با
+                                                تخفیف</h5>
+                                            <h6>{{ obj.total_price }}</h6>
+                                        {% else %}
+                                            <h6 style="color: crimson; font-style: initial">قیمت</h6>
+                                            <h6>{{ obj.total_price }}</h6>
+                                        {% endif %}
+                                        <a href="{{ obj.get_absolute_url }}" class="btn btn-primary">
+                                            جزيیات
+                                        </a>
+                                    </div>
 
+                                </div>
+                            {% endfor %}
+                        </div>
                     </div>
-                    {% endfor %}
                 </div>
             </div>
         </div>
+    </div>
 {% endblock %}
