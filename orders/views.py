@@ -73,8 +73,8 @@ def coupon_order(request,id):
         order.save()
     return redirect('orders:order_detail', id)
 
-def send_request(request):
-    pass
+# def send_request(request,id):
+#     return redirect('account:history')
 
 
 MERCHANT = 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX'

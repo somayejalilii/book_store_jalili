@@ -11,7 +11,7 @@ from django.db.models.signals import post_save
 
 
 class BaseUser(AbstractBaseUser, PermissionsMixin):
-# class BaseUser(AbstractBaseUser):
+    # class BaseUser(AbstractBaseUser):
     """
     a custom user model for authentication
     """
@@ -109,10 +109,11 @@ class Profile(models.Model):
     user = models.OneToOneField(BaseUser, on_delete=models.CASCADE)
     phone = models.IntegerField(null=True, blank=True)
     address = models.CharField(max_length=500, null=True, blank=True)
-    profile_image = models.ImageField(upload_to='profile/',null=True, blank=True)
+    profile_image = models.ImageField(upload_to='profile/', null=True, blank=True)
 
     def __str__(self):
         return self.user.username
+
 
 def save_profile_user(sender, **kwargs):
     """

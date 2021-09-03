@@ -31,7 +31,13 @@
 
             </div>
             <div class="col-6">
-                <img src="{{ profile.image.url }}" style="width: 300px; height: 200px;">
+                {% if profile.id.imag %}
+                    <h4>عکس پروفایل</h4>
+                <img class="circular--square" src="{{ profile.id.image.url }}" style="width: 300px; height: 200px;">
+                    {% else %}
+                    <h4>محل قرار گیری عکس کاربر</h4>
+                    <i class="far fa-10x fa-building text-muted"></i>
+                {% endif %}
             </div>
             <div>
                 <br>

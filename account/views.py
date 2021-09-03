@@ -100,7 +100,7 @@ def user_login(request):
                 else:
                     messages.success(request, 'رمز یا نام کاربری اشتباه است', 'primary')
             except BaseUser.DoesNotExist:
-                messages.success(request, 'میخوای نیا !!!', 'primary')
+                messages.success(request, 'نام کاربری یا رمز عبور اشتباه است !!!', 'primary')
 
     else:
         form = UserLoginForm()
@@ -138,7 +138,7 @@ def user_update(request):
     """
     if request.method == 'POST':
         user_form = UserUpdateForm(request.POST, instance=request.user)
-        profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.profile)
+        profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
         if user_form and profile_form.is_valid():
             user_form.save()
             profile_form.save()
